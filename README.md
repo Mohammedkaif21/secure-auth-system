@@ -37,24 +37,24 @@ project-root/
 
 ### Getting Started
 
-- ## Backend
-cd backend
-npm install
+## Backend
+- cd backend
+- npm install
 # Set up your .env file (DB credentials, JWT_SECRET, etc.)
-npm start
+- npm start
 
-- ## Frontend
-cd frontend
-npm install
-npm run dev
+## Frontend
+- cd frontend
+- npm install
+- npm run dev
 
 ### Tech Stack
-React
-Tailwind CSS
-Axios
-Node.js
-Express
-Sequelize ORM
-PostgreSQL
-JSON Web Tokens (JWT)
+- React
+- Tailwind CSS
+- Axios
+- Node.js
+- Express
+- Sequelize ORM
+- PostgreSQL
+- JSON Web Tokens (JWT)
 
