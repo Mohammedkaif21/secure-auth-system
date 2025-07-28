@@ -15,7 +15,7 @@ exports.signup  = async(req,res) =>{
         const user = await User.create({name,email,password:hashedPassword});
         res.status(200).json({message:'User Created',user})
     }catch(err){
-        res.status(500).json({error:'err.message'})
+        res.status(500).json({error:err.message})
     }
 }
 
@@ -67,17 +67,27 @@ exports.refreshTokens = async(req,res)=>{
         }
 
 
-        jwt.verify(refreshToken,process.env.REFRESH_TOKEN_SECRET,(err,decoded)=>{
+        jwt.verify(refreshToken,process.env.REFRESH_TOKEN_SECRET,async(err,decoded)=>{
             if(err){
-                return res.status(403).json({message:''})
-
+                return res.status(403).json({message:'Invalid or expired refresh token'})
             }
+            await storedToken.destroy();
             const newAccessToken =jwt.sign(
                 {userid:decoded.userid},
                 process.env.ACCESS_TOKEN_SECRET,
-                {expiresIn:'15m'}
+                {expiresIn:process.env.ACCESS_TOKEN_EXPIRES || '15m'}
             );
-            res.status(200).json({accessToken:newAccessToken,refreshToken})
+            const newRefreshToken = jwt.sign(
+                { userid: decoded.userid },
+                process.env.REFRESH_TOKEN_SECRET,
+                { expiresIn: process.env.REFRESH_TOKEN_EXPIRES || '7d' }
+            );
+            await Token.create({
+                token:newRefreshToken,
+                user_id:decoded.userid,
+                expires:new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+            })
+            res.status(200).json({accessToken:newAccessToken,newRefreshToken})
         })
     }catch(err){
         res.status(500).json({error:err.message});
