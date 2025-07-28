@@ -19,7 +19,7 @@ const Dashboard = () => {
             <div className="bg-white shadow-lg rounded-lg p-10 w-full max-w-3xl">
                 <h1 className="text-3xl font-bold text-center text-blue-700 mb-6">Welcome to Dashboard</h1>
                 <p className="text-center text-gray-600 mb-4">{data}</p>
-                <div className="flex justify-center">
+                <div className="flex justify-center select-none">
                     <LogoutButton />
                 </div>
             </div>
